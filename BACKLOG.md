@@ -1,7 +1,6 @@
-# BACKLOG — pozostałe scenariusze demo (nierealizowane w pierwszej turze)
-
+# BACKLOG — pozostałe scenariusze demo (nierealizowane)
 Program: **Ochrona Ludności i Zarządzanie Kryzysowe na Microsoft Fabric**
-Status na 2026-07-31. W realizacji: scenariusze **1, 4, 7, 12** (osobne repozytoria).
+Status na 2026-07-31. Zrealizowane: scenariusze **1, 4, 5, 6, 7, 12** (osobne repozytoria).
 
 Poniżej scenariusze odłożone — opis wystarczający, by w każdej chwili uruchomić je jako kolejne repozytorium.
 
@@ -37,35 +36,14 @@ Poniżej scenariusze odłożone — opis wystarczający, by w każdej chwili uru
 
 ---
 
-## 5. SPO Copilot — asystent procedur
+## ~~5. SPO Copilot — asystent procedur~~ — ZREALIZOWANY
 
-**Problem:** 16 Standardowych Procedur Operacyjnych plus procedury resortowe i wojewódzkie. W kryzysie oficer dyżurny musi w minutę wiedzieć, którą uruchomić i jakie są kolejne kroki.
-
-**Rozwiązanie:** asystent RAG nad korpusem procedur (SPO, KPZK, wojewódzkie plany ZK, plany OL) + workflow checklisty z rejestrem wykonania i dziennikiem decyzji (ślad audytowy dla późniejszego rozliczenia i lessons learned).
-
-**Fabric:** Lakehouse (dokumenty + indeks wektorowy), AI Skill / Data Agent, AI Functions (streszczenia, ekstrakcja kroków), Fabric App (checklista + dziennik), Power BI (czasy realizacji kroków).
-
-**Dane syntetyczne:** fikcyjne, ale realistyczne treści 16 SPO z krokami, rolami, SLA i wzorami dokumentów.
-
-**Wow moment:** pytanie głosem „mamy skażenie chemiczne w porcie, co robimy?" → asystent podaje właściwą SPO, kroki, odpowiedzialnych i generuje listę telefoniczną.
-
-**Szacunek:** M (5–8 dni). **Rekomendacja: wysoki priorytet w drugiej turze.**
-
----
-
-## 6. Infrastruktura Krytyczna — efekt domina
-
-**Problem:** systemy IK są współzależne. Awaria energetyczna zatrzymuje przepompownie wody, stacje bazowe, szpitale, sygnalizację. Nikt nie ma jednego modelu tych zależności.
-
-**Rozwiązanie:** graf zależności infrastruktury krytycznej + symulacja kaskad: „wyłącz węzeł X" → lista skutków wtórnych i trzeciego rzędu, populacja dotknięta, czas do wystąpienia skutku.
-
-**Fabric:** Lakehouse (węzły i krawędzie grafu), Notebook (propagacja kaskady, centralność węzłów, identyfikacja pojedynczych punktów awarii), Power BI (mapa + drzewo skutków), Data Agent, scenariusze what-if. Powiązanie z SPO-10.
-
-**Dane syntetyczne:** ~2000 obiektów IK w 11 systemach (energia, gaz, paliwa, woda, telekomunikacja, transport, zdrowie, finanse, żywność, ratownictwo, administracja) z zależnościami.
-
-**Wow moment:** kliknięcie w jedną stację i natychmiastowa odpowiedź „bez prądu 412 tys. osób, 3 szpitale na agregatach z autonomią 48h, 14 przepompowni wody — woda przestanie płynąć za 6 godzin".
-
-**Szacunek:** L (8–12 dni). **Rekomendacja: wysoki priorytet — bardzo mocny wizualnie.**
+> Zrealizowany jako repozytorium [`ol-spo-copilot`](../ol-spo-copilot/): korpus 16 SPO
+> (155 kroków) plus plany wojewódzkie, plany OL i KPZK — 49 dokumentów / 513 fragmentów,
+> retriever TF-IDF z routingiem pytanie → procedura (top-1 90,6%, top-3 93,8%, MRR 0,932),
+> karta odpowiedzi z checklistą i cytowaniami, dziennik decyzji oraz analityka czasów
+> normatywnych (dotrzymanie 76,1%) i powtarzających się blokad
+> (jedna przyczyna — 201 wystąpień w 4 lata).
 
 ---
 
@@ -125,10 +103,17 @@ Poniżej scenariusze odłożone — opis wystarczający, by w każdej chwili uru
 
 ## Rekomendowana kolejność drugiej tury
 
-1. **#6 Infrastruktura krytyczna — efekt domina** (wysoka wartość wizualna, naturalna kontynuacja COP-24)
-2. **#5 SPO Copilot** (najkrótsza droga do „AI, którą decydent rozumie")
-3. **#11 Zagrożenia hybrydowe** (najsilniejszy przekaz dla odbiorcy bezpieczeństwa państwa)
-4. **#2 Matryca ryzyka live** (spina całość na poziomie strategicznym)
+1. **#11 Zagrożenia hybrydowe** (najsilniejszy przekaz dla odbiorcy bezpieczeństwa państwa)
+2. **#2 Matryca ryzyka live** (spina całość na poziomie strategicznym)
+3. **#9 System ostrzegania ludności** (domyka wątek „komunikat do obywatela")
+
+> **#6 Infrastruktura krytyczna — efekt domina** został zrealizowany jako repozytorium
+> [`ol-infrastruktura-krytyczna`](../ol-infrastruktura-krytyczna/): 2106 obiektów IK w 11 systemach,
+> 6552 zależności, silnik propagacji kaskady, ranking pojedynczych punktów awarii i porównanie
+> wariantów wzmocnienia.
+>
+> **#5 SPO Copilot** został zrealizowany jako repozytorium
+> [`ol-spo-copilot`](../ol-spo-copilot/) — szczegóły przy pozycji nr 5 powyżej.
 
 ---
 

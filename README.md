@@ -23,6 +23,8 @@ bezpieczeństwa), 16 Standardowych Procedur Operacyjnych.
 | [`ol-siatka-bezpieczenstwa`](../ol-siatka-bezpieczenstwa/) | **Siatka Bezpieczeństwa jako aplikacja** | *Kto za co odpowiada i czy jest gotowy?* | Lakehouse, graf odpowiedzialności, Power BI, Data Agent, **Fabric App** |
 | [`ol-zasoby-logistyka`](../ol-zasoby-logistyka/) | **Zasoby i rezerwy — logistyka kryzysowa** | *Czym dysponujemy, kiedy dotrze i czy wystarczy?* | Lakehouse, optymalizacja przydziału, Eventstream (transporty), **Fabric App**, Activator |
 | [`ol-blackout-wrazliwi`](../ol-blackout-wrazliwi/) | **Blackout / zima — ludność wrażliwa** | *Kto jest najbardziej zagrożony i gdzie muszę być pierwszy?* | Lakehouse, indeksy wrażliwości i zagrożenia życia, optymalizacja rozstawienia, **Fabric App**, Activator |
+| [`ol-infrastruktura-krytyczna`](../ol-infrastruktura-krytyczna/) | **Infrastruktura krytyczna — efekt domina** | *Jeśli ten obiekt padnie, co się stanie i ile mam czasu?* | Lakehouse (graf 11 systemów IK), Eventstream, Eventhouse/KQL, silnik kaskady, Power BI, **Fabric App**, Activator, Data Agent |
+| [`ol-spo-copilot`](../ol-spo-copilot/) | **SPO Copilot — asystent procedur** | *Co mam zrobić w ciągu najbliższych 30 minut i kto to podpisuje?* | Lakehouse (korpus + indeks RAG), Eventstream, Eventhouse/KQL, notatniki (TF-IDF, ewaluacja), model semantyczny, Power BI, Activator, Data Agent, **Fabric App** |
 
 ### Stan realizacji (2026-07-31)
 
@@ -32,8 +34,10 @@ bezpieczeństwa), 16 Standardowych Procedur Operacyjnych.
 | `ol-siatka-bezpieczenstwa` | siatka 1000 komórek, 16 SPO, 106 deklaracji gotowości | silnik aktywacji, analiza luk, graf odpowiedzialności | 81 KB | ✅ gotowe |
 | `ol-zasoby-logistyka` | 60 magazynów, 400 punktów przyjęcia, 16 901 pozycji transportów | optymalizacja przydziału: **4,27 h → 1,70 h** | 114 KB | ✅ gotowe |
 | `ol-blackout-wrazliwi` | 735 602 zdarzeń RT, 900 placówek, 420 agregatów | IWL, IZŻ, rozstawienie: **13,1% → 36,7% pokrycia** | 116 KB | ✅ gotowe |
+| `ol-infrastruktura-krytyczna` | 2106 obiektów IK, 6552 zależności, 659 178 zdarzeń RT | silnik kaskady, SPOF, what-if: **−24% skutków wtórnych** | 92 KB | ✅ gotowe |
+| `ol-spo-copilot` | 16 SPO / 155 kroków, 513 fragmentów korpusu, 16 608 zdarzeń | RAG: top-1 **90,6%**; SLA **76,1%**; jedna blokada **201 razy w 4 lata** | 103 KB | ✅ gotowe |
 
-Pozostałe pomysły (8 scenariuszy) — [`BACKLOG.md`](BACKLOG.md).
+Pozostałe pomysły (6 scenariuszy) — [`BACKLOG.md`](BACKLOG.md).
 Wspólne konwencje merytoryczne i techniczne — [`CONVENTIONS.md`](CONVENTIONS.md).
 
 ---
@@ -48,6 +52,11 @@ Wspólne konwencje merytoryczne i techniczne — [`CONVENTIONS.md`](CONVENTIONS.
 COP-24              SIATKA               ZASOBY
 "co się dzieje"    "kto działa"        "czym działamy"
    │                    │                    │
+   ├────────────────────┼────────────────────┤
+   │                    │                    │
+   │          INFRASTRUKTURA KRYTYCZNA       │
+   │          "co padnie następne"           │
+   │                    │                    │
    └────────────────────┼────────────────────┘
                         │
                  LUDNOŚĆ WRAŻLIWA
@@ -57,6 +66,7 @@ COP-24              SIATKA               ZASOBY
 - **COP-24** odpowiada na pytanie *sytuacyjne* i uruchamia eskalację (gmina → powiat → wojewoda → minister wiodący → RZZK).
 - **Siatka Bezpieczeństwa** zamienia decyzję o eskalacji w konkretne zadania dla działów administracji (fazy R i O, moduły zadaniowe).
 - **Zasoby** odpowiadają na pytanie o siły i środki oraz decyzję o uruchomieniu rezerw (SPO-2).
+- **Infrastruktura krytyczna** dokłada wymiar *przewidywania*: zamienia obraz bieżący w prognozę skutków wtórnych i wskazuje, gdzie inwestycja realnie zmniejsza ryzyko (SPO-10).
 - **Ludność wrażliwa** przenosi całość z poziomu administracji (ZK) na poziom człowieka (OL).
 
 Każde repozytorium działa samodzielnie, ale wszystkie używają tej samej geografii
@@ -69,7 +79,7 @@ więc można je pokazywać jako jedną, spójną narrację lub osobno.
 
 | Oś | Zdarzenie | Repozytoria |
 |---|---|---|
-| **POWÓDŹ WRZESIEŃ** (D-3…D+10) | Ekstremalne opady w Sudetach, fala na Nysie Kłodzkiej i Odrze: Kłodzko → Nysa → Opole → Wrocław. Zagrożenia towarzyszące: Z07 energetyka, Z12 telekomunikacja, Z20 dezinformacja | `ol-cop24`, `ol-siatka-bezpieczenstwa`, `ol-zasoby-logistyka` |
+| **POWÓDŹ WRZESIEŃ** (D-3…D+10) | Ekstremalne opady w Sudetach, fala na Nysie Kłodzkiej i Odrze: Kłodzko → Nysa → Opole → Wrocław. Zagrożenia towarzyszące: Z07 energetyka, Z12 telekomunikacja, Z20 dezinformacja | `ol-cop24`, `ol-siatka-bezpieczenstwa`, `ol-zasoby-logistyka`, `ol-infrastruktura-krytyczna`, `ol-spo-copilot` |
 | **MRÓZ STYCZEŃ** (D-2…D+7) | Oblodzenie i kaskadowa awaria sieci przy -18 °C w kilku województwach | `ol-blackout-wrazliwi` |
 
 ---
