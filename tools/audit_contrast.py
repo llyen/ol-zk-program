@@ -30,6 +30,7 @@ APPS = [
     "ol-cop24/fabric-app/pulpit-rzzk",
     "ol-zasoby-logistyka/fabric-app/pulpit-zasobow",
     "ol-blackout-wrazliwi/fabric-app/pulpit-tarcza",
+    "ol-infrastruktura-krytyczna/fabric-app/pulpit-kaskad",
 ]
 
 # Paleta Tailwind v4 (podzbiór faktycznie używany) + barwy własne gov.
