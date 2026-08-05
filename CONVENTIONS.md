@@ -143,3 +143,71 @@ Język dokumentacji: **polski**. Nazwy techniczne (tabele, kolumny) po angielsku
 - Zero prawdziwych danych osobowych; PESEL/adresy generowane syntetycznie i oznaczone jako fikcyjne.
 - Brak poświadczeń w repo — konfiguracja przez `.env` (w `.gitignore`) i `config.example.json`.
 - Każdy README zaczyna się disclaimerem o charakterze demonstracyjnym.
+
+## 7. Wygląd aplikacji Fabric — obowiązująca paleta
+
+**Wszystkie aplikacje są jasne, w barwach rządowych (gov.pl / MSWiA).** Nowa aplikacja nie
+może powstać w ciemnym motywie. Paleta pochodzi wprost z arkusza stylów gov.pl
+(`https://www.gov.pl/css/govpl_template.css`), nie z oszacowania.
+
+Tokeny do wklejenia w `src/main.css` (osobny blok `@theme`, **nie** `@theme inline` —
+ten drugi służy do odwołań między zmiennymi):
+
+```css
+@theme {
+  --color-gov: #0052a5;
+  --color-gov-dark: #00417f;
+  --color-gov-light: #006cd7;
+  --color-gov-50: #e8eef7;
+  --color-gov-ink: #1b1b1b;
+  --color-gov-red: #d5233f;
+}
+```
+
+Wzorcem konwencji jest `ol-siatka-bezpieczenstwa/fabric-app/pulpit-koordynacji/src/components/ui.tsx`.
+Stamtąd brać wygląd kart, plakietek i przycisków:
+
+| Element | Klasy |
+|---|---|
+| strona | `bg-slate-100 text-slate-900` |
+| karta | `rounded-lg border border-slate-200 bg-white shadow-sm` |
+| tytuł / opis | `text-slate-900` / `text-slate-500` |
+| plakietka | `bg-*-100 text-*-800 ring-*-600/30` lub `bg-*-50 text-*-700 ring-*-600/30` |
+| przycisk główny | `bg-gov hover:bg-gov-dark text-white` |
+| nagłówek | biały, nad nim pasek `<div className="h-1 w-full bg-gov" />` |
+
+Bez godła RP (kwestia praw do znaku).
+
+### Czerwień jest sygnałem, nie barwą marki
+
+`#d5233f` koduje powagę sytuacji. Użyta w nagłówku albo na przycisku „Zapisz" traci siłę
+sygnału dokładnie wtedy, kiedy jest potrzebna. Nagłówki i przyciski są błękitne.
+
+### Skale porządkowe
+
+Jednolita skala powagi we wszystkich aplikacjach — cztery rozróżnialne stopnie:
+
+```text
+#15803d  →  #a16207  →  #c2410c  →  #d5233f
+zielony     bursztyn    pomarańcz   czerwień gov
+```
+
+**Każdy poziom musi mieć własną barwę i musi to sprawdzać test.** Odwzorowanie barw przy
+przechodzeniu na jasną paletę jest wiele-do-jednego, więc potrafi skleić dwa sąsiednie
+stopnie w jeden kolor. Kompilacja i testy funkcjonalne tego nie wykryją — mapa po prostu
+przestaje rozróżniać stan spokojny od podwyższonego.
+
+### Narzędzia
+
+| Skrypt | Zastosowanie |
+|---|---|
+| `_program/tools/retheme_gov.py` | jednorazowe przemalowanie aplikacji z ciemnego motywu; bez `--apply` robi próbę na sucho i wypisuje klasy bez odwzorowania |
+| `_program/tools/audit_contrast.py` | audyt kontrastu WCAG par `bg-*`/`text-*`; ma kończyć się wynikiem **0** |
+
+Kompilator nie wykryje jasnego napisu na jasnym tle. `audit_contrast.py` uruchamiać po
+każdej większej zmianie wyglądu.
+
+Przezroczystość nie przenosi się między motywami: `bg-amber-500/10` na ciemnym tle to
+czytelny odcień, na jasnym praktycznie znika. Przy powierzchniach porzucać przezroczystość,
+przy obwódkach zachowywać (`ring-*-600/30`). Wyjątek — **przykrycie okna modalnego** musi
+pozostać przezroczyste (`bg-slate-900/40`), inaczej gubi kontekst pod spodem.
