@@ -40,6 +40,29 @@ bezpieczeństwa), 16 Standardowych Procedur Operacyjnych.
 Pozostałe pomysły (6 scenariuszy) — [`BACKLOG.md`](BACKLOG.md).
 Wspólne konwencje merytoryczne i techniczne — [`CONVENTIONS.md`](CONVENTIONS.md).
 
+### Wdrożenie na Fabric (2026-08-06)
+
+Wszystkie sześć scenariuszy działa na pojemności `fcdemo` (F8, West Europe), każdy
+w osobnym obszarze roboczym. Każdy ma wdrożoną aplikację Fabric App (Rayfin) z jasną
+paletą rządową i zapisem do własnej bazy.
+
+| Repozytorium | Fabric App | Adres |
+|---|---|---|
+| `ol-cop24` | Pulpit RZZK | https://key-horn-c1ee0f1637-westeurope.webapp.fabricapps.net |
+| `ol-siatka-bezpieczenstwa` | Pulpit koordynacji | https://keen-ore-908e20772e-westeurope.webapp.fabricapps.net |
+| `ol-zasoby-logistyka` | Pulpit zasobów | https://trim-cove-aca76ba030-westeurope.webapp.fabricapps.net |
+| `ol-blackout-wrazliwi` | Pulpit Tarcza | https://maple-gulf-3321fb8cc7-westeurope.webapp.fabricapps.net |
+| `ol-infrastruktura-krytyczna` | Symulator kaskad IK | https://grand-coast-b2b8efb506-westeurope.webapp.fabricapps.net |
+| `ol-spo-copilot` | Asystent SPO | https://tangy-poppy-03a3300f0e-westeurope.webapp.fabricapps.net |
+
+Szczegóły wdrożenia — `DEPLOYMENT_STATUS.md` w każdym repozytorium. Kontrast barw we
+wszystkich aplikacjach sprawdza [`tools/audit_contrast.py`](tools/audit_contrast.py)
+(0 par poniżej progu WCAG 4,5:1).
+
+**Do przeklikania przez człowieka:** logowanie brokerem Fabric i zapis wiersza przez
+formularz. Sprawdzone automatycznie (HTTP 200, serwowanie sceny, paleta w CSS), ale
+ścieżka zapisu nie została wykonana ręcznie od końca do końca w żadnej z aplikacji.
+
 ---
 
 ## 🧭 Jak to się układa w jedną opowieść
