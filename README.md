@@ -59,9 +59,30 @@ Szczegóły wdrożenia — `DEPLOYMENT_STATUS.md` w każdym repozytorium. Kontra
 wszystkich aplikacjach sprawdza [`tools/audit_contrast.py`](tools/audit_contrast.py)
 (0 par poniżej progu WCAG 4,5:1).
 
+Każdy scenariusz ma też Data Agenta („Zapytaj o dane") podpiętego do Lakehouse,
+Eventhouse i modelu semantycznego. Instrukcja systemowa każdego agenta jest składana
+ze specyfikacji `ai/DATA_AGENT.md` w jego repozytorium, więc zmiana specyfikacji wymaga
+ponownego uruchomienia `deploy/create_data_agent.py` — dokumentacja i wdrożenie nie
+rozjeżdżają się w czasie.
+
+| Repozytorium | Data Agent | Podpięte źródła (tabel) |
+|---|---|---|
+| `ol-cop24` | `agent_cop24` | Lakehouse 21, Eventhouse 16, model 20 |
+| `ol-siatka-bezpieczenstwa` | `agent_siatka_bezpieczenstwa` | Lakehouse 13, Eventhouse 10, model 16 |
+| `ol-zasoby-logistyka` | `agent_zasoby_logistyka` | Lakehouse 21, Eventhouse 15, model 21 |
+| `ol-blackout-wrazliwi` | `agent_blackout_wrazliwi` | Lakehouse 24, Eventhouse 17, model 24 |
+| `ol-infrastruktura-krytyczna` | `agent_infrastruktura_krytyczna` | Lakehouse 14, Eventhouse 5, model 19 |
+| `ol-spo-copilot` | `OL_SPO_DataAgent` | Lakehouse 11, Eventhouse 10, model 13 |
+
+Funkcje KQL są w każdym przypadku zweryfikowane, ale opisane w podpowiedzi źródła zamiast
+podpięte jako elementy: backend Data Agenta odrzuca elementy typu `kusto.functions`, mimo
+że schemat definicji je dopuszcza.
+
 **Do przeklikania przez człowieka:** logowanie brokerem Fabric i zapis wiersza przez
 formularz. Sprawdzone automatycznie (HTTP 200, serwowanie sceny, paleta w CSS), ale
 ścieżka zapisu nie została wykonana ręcznie od końca do końca w żadnej z aplikacji.
+Osobno: **publikacja Data Agentów** z wersji roboczej do produkcyjnej — API Fabric tego
+kroku nie udostępnia, trzeba go kliknąć w portalu.
 
 ---
 
